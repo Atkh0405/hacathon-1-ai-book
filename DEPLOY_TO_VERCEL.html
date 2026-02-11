@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy to Vercel - Step by Step</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #434343 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        h1 {
+            color: #000;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+        
+        .vercel-logo {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 30px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+        
+        .warning h2 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .warning p {
+            color: #856404;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+        
+        .step-section {
+            margin: 40px 0;
+        }
+        
+        .step-section h2 {
+            color: #000;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            border-left: 5px solid #000;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            background: #000;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 45px;
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-right: 15px;
+        }
+        
+        .step h3 {
+            display: inline-block;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .step p, .step ul {
+            margin-top: 15px;
+            color: #5a6c7d;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+        
+        .step ul {
+            margin-left: 60px;
+        }
+        
+        .step li {
+            margin: 10px 0;
+        }
+        
+        .big-button {
+            display: inline-block;
+            padding: 20px 40px;
+            background: #000;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 20px 10px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+        
+        .big-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            background: #333;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border-left: 6px solid #28a745;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+        
+        .success-box h3 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+        
+        .success-box p {
+            color: #155724;
+            line-height: 1.8;
+        }
+        
+        code {
+            background: #f8f9fa;
+            padding: 4px 10px;
+            border-radius: 5px;
+            color: #e83e8c;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border-left: 6px solid #17a2b8;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            color: #0c5460;
+        }
+        
+        .timeline {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .timeline-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #6c757d;
+            padding-left: 20px;
+        }
+        
+        .timeline-item.done {
+            border-left-color: #28a745;
+            background: #d4edda;
+            border-radius: 8px;
+        }
+        
+        .timeline-item.current {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+            border-radius: 8px;
+        }
+        
+        .timeline-item.pending {
+            border-left-color: #dc3545;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="vercel-logo">▲</div>
+        <h1>Deploy to Vercel</h1>
+        <p style="text-align: center; color: #5a6c7d; font-size: 1.2em; margin-bottom: 40px;">
+            Make your project live on the internet in 2 minutes!
+        </p>
+        
+        <div class="timeline">
+            <h2 style="color: #2c3e50; margin-bottom: 20px;">Deployment Progress:</h2>
+            
+            <div class="timeline-item done">
+                <strong>✅ Step 1: Project Created</strong>
+                <p>All files ready on your computer</p>
+            </div>
+            
+            <div class="timeline-item current">
+                <strong>⏳ Step 2: Upload to GitHub</strong>
+                <p>You need to do this first before Vercel deployment</p>
+            </div>
+            
+            <div class="timeline-item pending">
+                <strong>⏳ Step 3: Deploy to Vercel</strong>
+                <p>After GitHub upload, deploy here</p>
+            </div>
+        </div>
+        
+        <div class="warning">
+            <h2>⚠️ Important: GitHub First!</h2>
+            <p><strong>You MUST upload your project to GitHub before deploying to Vercel.</strong></p>
+            <p style="margin-top: 15px;">Vercel imports projects from GitHub, so your code needs to be on GitHub first.</p>
+        </div>
+        
+        <div class="step-section">
+            <h2>📋 Complete Deployment Process</h2>
+            
+            <div class="step">
+                <span class="step-number">1</span>
+                <h3>Upload to GitHub First</h3>
+                <p><strong>Status: NOT DONE YET</strong></p>
+                <p>Use GitHub Desktop to upload your project:</p>
+                <ul>
+                    <li>Download GitHub Desktop from <a href="https://desktop.github.com/" target="_blank">desktop.github.com</a></li>
+                    <li>Sign in with username: <code>Atkh0405</code></li>
+                    <li>Add repository from: <code>C:\Users\sss\Desktop\hacathon-1</code></li>
+                    <li>Publish as: <code>physical-ai-robotics-textbook</code></li>
+                    <li>Make it public (uncheck "Keep this code private")</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <a href="https://desktop.github.com/" class="big-button" target="_blank">
+                        Download GitHub Desktop
+                    </a>
+                </p>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">2</span>
+                <h3>Sign Up / Sign In to Vercel</h3>
+                <p>After your project is on GitHub, go to Vercel:</p>
+                <ul>
+                    <li>Go to <a href="https://vercel.com/signup" target="_blank">vercel.com/signup</a></li>
+                    <li>Click <strong>"Continue with GitHub"</strong></li>
+                    <li>Authorize Vercel to access your GitHub account</li>
+                    <li>This connects your GitHub to Vercel</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <a href="https://vercel.com/signup" class="big-button" target="_blank">
+                        Sign Up to Vercel
+                    </a>
+                </p>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">3</span>
+                <h3>Import Your Project</h3>
+                <p>In Vercel dashboard:</p>
+                <ul>
+                    <li>Click <strong>"Add New..."</strong> → <strong>"Project"</strong></li>
+                    <li>Find your repository: <code>Atkh0405/physical-ai-robotics-textbook</code></li>
+                    <li>Click <strong>"Import"</strong></li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">4</span>
+                <h3>Configure Project</h3>
+                <p>On the configuration page:</p>
+                <ul>
+                    <li>Project Name: <code>physical-ai-robotics-textbook</code></li>
+                    <li>Framework Preset: <strong>Other</strong> (or leave as detected)</li>
+                    <li>Root Directory: <code>./</code> (leave as default)</li>
+                    <li>Build Command: Leave empty</li>
+                    <li>Output Directory: Leave empty</li>
+                </ul>
+                <div class="info-box" style="margin-top: 15px;">
+                    <strong>Note:</strong> Your project is a static HTML site, so no build configuration is needed. Vercel will automatically detect and serve your files.
+                </div>
+            </div>
+            
+            <div class="step">
+                <span class="step-number">5</span>
+                <h3>Deploy!</h3>
+                <p>Click the big <strong>"Deploy"</strong> button and wait 1-2 minutes.</p>
+                <p style="margin-top: 15px;">Vercel will:</p>
+                <ul>
+                    <li>Clone your repository from GitHub</li>
+                    <li>Build your project (if needed)</li>
+                    <li>Deploy to a live URL</li>
+                    <li>Give you a URL like: <code>physical-ai-robotics-textbook.vercel.app</code></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="success-box">
+            <h3>🎉 After Deployment</h3>
+            <p>Your project will be live at a URL like:</p>
+            <p style="margin-top: 10px; font-size: 1.2em;"><code>https://physical-ai-robotics-textbook.vercel.app</code></p>
+            <p style="margin-top: 15px;">You can share this URL with anyone, and they can access your Physical AI & Humanoid Robotics Textbook!</p>
+        </div>
+        
+        <div class="info-box">
+            <h3 style="margin-bottom: 15px;">💡 Why This Order?</h3>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>GitHub = Storage:</strong> Your code lives on GitHub</li>
+                <li><strong>Vercel = Hosting:</strong> Vercel reads from GitHub and makes it live</li>
+                <li><strong>Automatic Updates:</strong> When you update GitHub, Vercel auto-deploys</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e9ecef;">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">Quick Links</h3>
+            <a href="https://desktop.github.com/" class="big-button" target="_blank">
+                1. Download GitHub Desktop
+            </a>
+            <a href="https://vercel.com/signup" class="big-button" target="_blank">
+                2. Sign Up to Vercel
+            </a>
+            <p style="margin-top: 30px; color: #6c757d;">
+                Complete Step 1 (GitHub upload) first, then proceed to Step 2 (Vercel deployment)
+            </p>
+        </div>
+    </div>
+</body>
+</html>
